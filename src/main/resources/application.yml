@@ -1,0 +1,16 @@
+# springdoc-openapi
+springdoc:
+  group-configs:
+    - group: 'default'
+      packages-to-scan: com.zmh.ai.controller
+# knife4j
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
+server:
+  port: 8081
+
+spring:
+  application:
+    name: ai
