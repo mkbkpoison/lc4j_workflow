@@ -14,3 +14,18 @@ server:
 spring:
   application:
     name: ai
+  ai:
+    dashscope:
+      api-key: sk-e6276010e9f94f7dad21e3684d38b011
+      chat:
+        options:
+          model: qwen-plus
+
+langchain4j:
+  community:
+    dashscope:
+      chat-model:
+        model-name: qwen-max
+        api-key: sk-e6276010e9f94f7dad21e3684d38b011
+
+
