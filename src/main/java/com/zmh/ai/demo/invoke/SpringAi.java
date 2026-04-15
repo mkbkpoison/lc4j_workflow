@@ -3,17 +3,12 @@ package com.zmh.ai.demo.invoke;
 import jakarta.annotation.Resource;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.messages.AssistantMessage;
-import org.springframework.ai.chat.messages.Message;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * @Description
@@ -38,8 +33,6 @@ public class SpringAi implements CommandLineRunner {
 
     public void demo(){
 
-        record AssistantMessage(String text){}
-
         MessageWindowChatMemory chatMemory = MessageWindowChatMemory
                 .builder()
                 .chatMemoryRepository(new InMemoryChatMemoryRepository())
@@ -48,7 +41,7 @@ public class SpringAi implements CommandLineRunner {
 
 
         ChatClient chatClient = ChatClient.builder(dashscopeChatModel)
-                .defaultSystem("你是编程大师")
+                .defaultSystem("你是java编程大师，用最精简的话回答我的问题")
                 .defaultAdvisors(
                         MessageChatMemoryAdvisor.builder(chatMemory).build()// 对话记忆 adviso
 
@@ -62,6 +55,7 @@ public class SpringAi implements CommandLineRunner {
                 .user("userText")
                 .call()
                 .content();
+
 
     }
 

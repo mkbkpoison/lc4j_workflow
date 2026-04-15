@@ -26,11 +26,22 @@
         <victools.version>4.38.0</victools.version>
         <!-- 统一 Jackson 版本 -->
         <jackson.version>2.16.1</jackson.version>
+        <!-- Spring AI 版本 -->
+        <spring-ai.version>1.1.2</spring-ai.version>
     </properties>
 
     <!-- 添加依赖管理，统一版本 -->
     <dependencyManagement>
         <dependencies>
+            <!-- Spring AI BOM 管理 -->
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>${spring-ai.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- 统一 victools jsonschema 相关依赖版本 -->
             <dependency>
                 <groupId>com.github.victools</groupId>
@@ -55,6 +66,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+
+        <!-- 添加 Spring AI 核心依赖 -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-core</artifactId>
+        </dependency>
+
 
         <dependency>
             <groupId>com.mysql</groupId>
@@ -157,7 +175,42 @@
             <artifactId>jsonschema-module-jackson</artifactId>
             <version>${victools.version}</version>
         </dependency>
+
+        <!-- Source: https://mvnrepository.com/artifact/org.springframework.ai/spring-ai-markdown-document-reader -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-markdown-document-reader</artifactId>
+            <version>2.0.0-M4</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- 添加 Spring AI 仓库需要的 repository -->
+        <dependency>
+            <groupId>org.springframework.ai</groupId>
+            <artifactId>spring-ai-retry</artifactId>
+        </dependency>
+
     </dependencies>
+
+    <!-- 添加 Spring 里程碑仓库 -->
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>
