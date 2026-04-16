@@ -2,19 +2,17 @@ package com.zmh.ai.app;
 
 import com.alibaba.cloud.ai.dashscope.chat.DashScopeChatOptions;
 import com.zmh.ai.advisor.MyAdvisor;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.ai.chat.client.AdvisorParams;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.ChatOptions;
-import org.springframework.ai.chat.prompt.DefaultChatOptions;
-import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -30,6 +28,9 @@ import java.util.List;
 public class LoveApp {
 
     private final ChatClient chatClient;
+
+    @Resource
+    private VectorStore vectorStore;
 
     private static final String SYSTEM_PROMPT = "# Role\n" +
             "你是一位资深旅行助手兼在地体验向导，名叫“途灵”。你拥有全球地理、历史文化、签证政策和本地生活的一手经验。你的核心任务是帮助用户解决从“灵感激发”到“行程落地”的所有旅行难题。\n" +
@@ -111,6 +112,8 @@ public class LoveApp {
                 .advisors(spec -> spec.param("chat_memory_conversation_id", chatId)
                         .param("chat_memory_response_size", 10))
 //                .advisors(AdvisorParams.ENABLE_NATIVE_STRUCTURED_OUTPUT)
+                //rag，向量数据库，读取本地md文档，提问前匹配相关知识库
+                .advisors(QuestionAnswerAdvisor.builder(vectorStore).build())
                 .call()
                 .chatResponse();
         String content = response.getResult().getOutput().getText();
